@@ -1,124 +1,101 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export default function Home() {
   const navigate = useNavigate();
 
-  // 模拟 ChatGPT 的系统初始化提示
-  const systemLogs = [
-    "System initialized. Ready for metaphysical computations.",
-    "输入出生时空坐标或随机念头，即可开始推演。"
+  // ----- 实时时钟（精确到秒）-----
+  const [now, setNow] = useState(new Date());
+  useEffect(() => {
+    const timer = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const formattedDate = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
+  const formattedTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
+  const weekdays = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+  const weekday = weekdays[now.getDay()];
+
+  // ----- 导航项（点击跳转）-----
+  const navItems = [
+    { name: '个人中心', path: '/personal', icon: '👤' },
+    { name: '我的案例', path: '/mycases', icon: '📚' },
+    { name: '书籍参考', path: '/reference', icon: '📖' },
+    { name: '联系我们', path: '/contact', icon: '☎️' },
   ];
 
-  const features = [
-    {
-      id: '01',
-      title: '四柱八字分析',
-      desc: '解析天干地支、五行损益与大运流年。基于传统命理矩阵算法。',
-      badge: 'BAZI-CORE v1.0',
-      action: () => navigate('/bazi'),
-      buttonText: '开始分析',
-    },
-    {
-      id: '02',
-      title: '梅花易数断事',
-      desc: '以心动念，捕捉当前时空节点随机起卦，推演事件吉凶演变。',
-      badge: 'MEIHUA-ENGINE',
-      action: () => navigate('/meihua'),
-      buttonText: '启动起卦',
-    },
+  // ----- 四大功能按钮-----
+  const mainButtons = [
+    { name: '梅花易数', path: '/meihua', icon: '🌿', colorA: '#7dd3fc', colorB: '#38bdf8' },
+    { name: '奇门遁甲', path: '/qimen', icon: '🌀', colorA: '#c7b2ff', colorB: '#8b5cf6' },
+    { name: '八字', path: '/bazi', icon: '📜', colorA: '#ffd6a5', colorB: '#ffb86b' },
+    { name: '神卜', path: '/shenbu', icon: '✨', colorA: '#c7f9cc', colorB: '#57dd8c' },
   ];
 
   return (
-    // 使用 ChatGPT 标志性的极暗碳黑背景 (bg-[#202123] 或 bg-[#0d0d0d])
-    <div className="min-h-screen bg-[#0d0d0d] text-[#ececf1] font-sans selection:bg-[#5436da]">
-      
-      {/* 极简主容器 */}
-      <div className="mx-auto max-w-2xl px-6 py-12 md:py-24">
-        
-        {/* 顶部 Header：学 ChatGPT 保持极度低调 */}
-        <header className="flex items-center justify-between border-b border-white/10 pb-8 mb-12">
-          <div className="flex items-center gap-3">
-            {/* 类似 GPT 的简洁几何 Logo */}
-            <div className="w-8 h-8 rounded-sm bg-[#10a37f] text-white flex items-center justify-center font-semibold text-sm tracking-tighter">
-              ☯
-            </div>
-            <div>
-              <div className="text-sm font-medium tracking-wide text-white">MysticAI</div>
-              <div className="text-xs text-zinc-500">Models: Bazi-Matrix & Meihua-v1</div>
+    <div className="min-h-screen bg-[#f8f9fc] text-[#1e293b] font-sans">
+      {/* 顶部导航栏 + 时钟 */}
+      <div className="sticky top-0 z-20 bg-white border-b border-[#e9edf2] shadow-sm">
+        <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between gap-3">
+          {/* Logo / 品牌（modernized 左侧） */}
+          <div className="flex items-center gap-4">
+            <div className="text-xl font-bold bg-gradient-to-r from-[#1e2b3c] to-[#2c3e4e] bg-clip-text text-transparent">玄学·灵机</div>
+            <div className="hidden sm:flex gap-2">
+              {navItems.map(item => (
+                <button
+                  key={item.name}
+                  onClick={() => navigate(item.path)}
+                  className="flex items-center gap-2 text-sm text-[#475569] bg-white border border-transparent hover:border-[#e6eef8] px-3 py-1 rounded-full shadow-sm transition-all"
+                >
+                  <span className="text-sm">{item.icon || ''}</span>
+                  <span className="font-medium">{item.name}</span>
+                </button>
+              ))}
             </div>
           </div>
-          
-          <div className="flex items-center gap-2 text-xs text-[#10a37f] bg-[#10a37f]/10 px-2.5 py-1 rounded-md border border-[#10a37f]/20">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#10a37f] animate-pulse"></span>
-            Ready
+
+          {/* 实时时钟区域 */}
+          <div className="bg-[#f1f5f9] rounded-full px-4 py-1.5 text-sm font-mono shadow-inner">
+            <span className="text-[#475569] mr-2">{formattedDate} {weekday}</span>
+            <span className="font-semibold text-[#0f172a]">{formattedTime}</span>
           </div>
-        </header>
+        </div>
+      </div>
 
-        {/* 主欢迎语：ChatGPT 经典的居中大字与干净介绍 */}
-        <section className="mb-12 text-center md:text-left">
-          <h1 className="text-3xl font-semibold tracking-tight text-white mb-4">
-            今天想推演什么？
-          </h1>
-          <p className="text-sm leading-relaxed text-zinc-400 max-w-md">
-            融汇传统数术与现代极简交互。请选择下方的核心模块，或直接通过控制台查看系统状态。
-          </p>
-        </section>
+      <div className="main-bg-accent" />
 
-        {/* 功能列表：改用 ChatGPT 经典对话框/提示卡片样式（单色、微高亮、硬朗边框） */}
-        <section className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12">
-          {features.map((item) => (
-            <div
-              key={item.id}
-              onClick={item.action}
-              className="group relative rounded-xl border border-white/10 bg-[#171717] p-5 hover:bg-[#212121] hover:border-white/20 transition-all cursor-pointer flex flex-col justify-between"
+      {/* 主要内容区：欢迎语 + 四宫格平分页面 */}
+      <div className="max-w-7xl mx-auto px-6 py-8">
+        {/* 欢迎语 */}
+        <div className="text-center mb-6">
+          <h1 className="text-3xl font-semibold tracking-tight bg-gradient-to-r from-[#1f2a3e] to-[#2c3e50] bg-clip-text text-transparent">玄学排盘 · 洞悉天机</h1>
+          <p className="text-[#5b6e8c] mt-2">梅花易数 · 奇门遁甲 · 八字命理 · 神卜灵签</p>
+        </div>
+
+        {/* 四宫格：每个按钮平分可视高度（减去头部与欢迎语），并带动效 */}
+        <div style={{ height: 'calc(100vh - 220px)' }} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {mainButtons.map((btn) => (
+            <button
+              key={btn.name}
+              onClick={() => navigate(btn.path)}
+              className="feature-btn h-full w-full flex flex-col items-center justify-center rounded-3xl p-6 text-white relative overflow-hidden"
+              style={{ background: `linear-gradient(135deg, ${btn.colorA || '#7dd3fc'}, ${btn.colorB || '#38bdf8'})` }}
             >
-              <div>
-                <div className="text-[10px] font-mono tracking-widest text-zinc-500 uppercase mb-2">
-                  {item.badge}
-                </div>
-                <h2 className="text-base font-medium text-white flex items-center justify-between">
-                  {item.title}
-                  {/* 右侧微小箭头，ChatGPT 提示词卡片常见设计 */}
-                  <span className="text-zinc-500 group-hover:translate-x-0.5 group-hover:text-white transition-all text-xs">
-                    →
-                  </span>
-                </h2>
-                <p className="mt-2 text-xs leading-relaxed text-zinc-400">
-                  {item.desc}
-                </p>
-              </div>
+              <div className="feature-icon mb-4 text-5xl">{btn.icon}</div>
+              <div className="text-xl font-bold drop-shadow-sm">{btn.name}</div>
+              <div className="mt-3 text-sm opacity-90">点击进入 · 体验专业排盘</div>
 
-              <div className="mt-6">
-                <span className="inline-flex items-center text-xs font-medium text-[#10a37f] group-hover:underline">
-                  {item.buttonText}
-                </span>
-              </div>
-            </div>
+              {/* small decorative floating dots */}
+              <span className="float-dot" style={{ top: '10%', left: '15%' }} />
+              <span className="float-dot" style={{ bottom: '12%', right: '12%', width: '14px', height: '14px' }} />
+            </button>
           ))}
-        </section>
+        </div>
 
-        {/* 控制台/日志区：模仿 ChatGPT 代码块/系统提示的硬核极简感 */}
-        <section className="rounded-xl border border-white/10 bg-[#171717] p-4 font-mono text-xs">
-          <div className="flex items-center justify-between border-b border-white/5 pb-2 mb-3 text-zinc-500">
-            <span>TERMINAL LOGS</span>
-            <span>SECURE CHANNEL</span>
-          </div>
-          <div className="space-y-1.5 text-zinc-400">
-            {systemLogs.map((log, index) => (
-              <div key={index} className="flex gap-2">
-                <span className="text-[#10a37f] select-none">&gt;</span>
-                <p className="truncate">{log}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* 底部版权/免责提示：模仿 OpenAI 底部的小字提示 */}
-        <footer className="mt-16 text-center text-[11px] text-zinc-600">
-          MysticAI may provide traditional philosophical guidance. Use with logic and discretion.
-        </footer>
-
+        {/* 页脚提示 */}
+        <div className="text-center text-xs text-[#94a3b8] border-t border-[#eef2f6] pt-4 mt-6">
+          择时而起，感而遂通 —— 点击任一术数进入专属排盘界面
+        </div>
       </div>
     </div>
   );
