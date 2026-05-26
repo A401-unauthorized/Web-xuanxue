@@ -95,8 +95,8 @@ export default function Bazi() {
     setLoading(true);
     setErrorMsg("");
     try {
-      // 这里的端口请确保与你的 FastAPI 后端一致（通常是 8000）
-      const url = `http://localhost:8000/bazi?year=${formData.year}&month=${formData.month}&day=${formData.day}&hour=${formData.hour}&minute=${formData.minute}&gender=${formData.gender}`;
+      // 使用相对路径，以支持代理或同源部署
+      const url = `/bazi?year=${formData.year}&month=${formData.month}&day=${formData.day}&hour=${formData.hour}&minute=${formData.minute}&gender=${formData.gender}`;
       
       const response = await fetch(url);
       const data = await response.json();
