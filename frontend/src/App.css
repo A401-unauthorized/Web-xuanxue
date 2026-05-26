@@ -5,13 +5,99 @@
 }
 
 body {
+  background: #0f1724;
+  color: #fff;
+  font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+}
 
-  background: black;
+/* Feature button styles */
+.feature-btn {
+  transition: transform 300ms ease, box-shadow 300ms ease;
+  cursor: pointer;
+}
+.feature-btn:hover {
+  transform: translateY(-8px) scale(1.01);
+  box-shadow: 0 20px 40px rgba(2,6,23,0.45);
+}
+.feature-icon {
+  background: rgba(255,255,255,0.08);
+  width: 72px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18px;
+  box-shadow: inset 0 -6px 12px rgba(0,0,0,0.15);
+}
 
+/* floating decorative dots */
+.float-dot {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: rgba(255,255,255,0.22);
+  border-radius: 9999px;
+  filter: blur(0.6px);
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% { transform: translateY(0) translateX(0); opacity: 0.9 }
+  50% { transform: translateY(-14px) translateX(6px); opacity: 0.6 }
+  100% { transform: translateY(0) translateX(0); opacity: 0.9 }
+}
+
+/* timepicker wheel selects */
+.wheel-select {
+  -webkit-appearance: none;
+  appearance: none;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(15,23,36,0.06);
+  background: rgba(255,255,255,0.95);
+  color: #0f1724;
+  font-weight: 700;
+  min-width: 78px;
+  text-align: center;
+}
+
+.wheel-select option { padding: 6px 0 }
+
+/* mode pill */
+.mode-pill {
+  padding: 8px 12px;
+  border-radius: 9999px;
+  background: rgba(15,23,36,0.04);
+  color: #374151;
+  cursor: pointer;
+  font-weight: 600;
+}
+.mode-pill.active {
+  background: #0f1724;
   color: white;
+  box-shadow: 0 6px 18px rgba(15,23,36,0.08);
+}
 
-  font-family:
-    "PingFang SC",
-    "Microsoft YaHei",
-    sans-serif;
+/* touch target adjustments for iOS */
+.timepicker .wheel-select, .timepicker input[type="datetime-local"], .mode-pill {
+  min-height: 44px;
+  font-size: 17px;
+}
+
+/* subtle background gradient layer behind main content */
+.main-bg-accent {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 68px;
+  bottom: 0;
+  background: radial-gradient(1200px 400px at 10% 10%, rgba(99,102,241,0.06), transparent 10%), radial-gradient(800px 300px at 90% 80%, rgba(56,189,248,0.04), transparent 12%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ensure page containers sit above accent layer */
+.max-w-7xl, .max-w-5xl {
+  position: relative;
+  z-index: 2;
 }
