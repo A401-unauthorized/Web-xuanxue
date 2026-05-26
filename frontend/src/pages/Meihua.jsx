@@ -1,5 +1,6 @@
 // frontend/src/pages/Meihua.jsx
 import { useState } from "react";
+import TimePicker from "./TimePicker";
 
 function Meihua() {
   const [time, setTime] = useState(""); // stores datetime-local value (e.g. 2026-05-22T13:30)
@@ -46,12 +47,9 @@ function Meihua() {
 
         <div className="space-y-3">
           <label className="block text-sm text-zinc-400">时间（本地）：</label>
-          <input
-            type="datetime-local"
-            value={time}
-            onChange={(e) => setTime(e.target.value)}
-            className="w-full bg-zinc-800 rounded-xl p-3 text-base outline-none border border-zinc-700 focus:border-white"
-          />
+          <div style={{ maxWidth: 420 }}>
+            <TimePicker value={time} onChange={setTime} />
+          </div>
           <p className="text-xs text-zinc-500">输入示例：2026-05-22 13:30（或使用上面选择器）</p>
 
           <button
